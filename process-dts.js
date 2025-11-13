@@ -31,7 +31,7 @@ export default function processDts(packageName, pathName, dtsFile) {
     },
   });
 
-  if (exports.length === 0) {
+  if (exports.size === 0) {
     return;
   }
 

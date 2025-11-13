@@ -31,9 +31,6 @@ export declare class Chart<
   readonly platform: BasePlatform;
 }
 
-// export const
-export const registerables: readonly ChartComponentLike[];
-
 // export declare type
 export declare type ChartItem =
   | string
@@ -51,6 +48,32 @@ export class DatasetController<
 > {
   constructor(chart: Chart, datasetIndex: number);
 }
+`
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "chart.js" {
+      export {
+        Color,
+        ScriptableContext,
+        Scriptable,
+        Chart,
+        ChartItem,
+        UpdateModeEnum,
+        DatasetController,
+      } from "@types/chart.js";
+    }
+    "
+  `);
+});
+
+test("todo2", () => {
+  expect(
+    processDts(
+      "chart.js",
+      ".",
+      `
+// export const
+export const registerables: readonly ChartComponentLike[];
 
 // export const enum
 export const enum DecimationAlgorithm {
@@ -62,15 +85,28 @@ export const enum DecimationAlgorithm {
   ).toMatchInlineSnapshot(`
     "declare module "chart.js" {
       export {
-        Color,
-        ScriptableContext,
-        Scriptable,
-        Chart,
         registerables,
-        ChartItem,
-        UpdateModeEnum,
-        DatasetController,
         DecimationAlgorithm,
+      } from "@types/chart.js";
+    }
+    "
+  `);
+});
+
+test("no exports", () => {
+  expect(
+    processDts(
+      "chart.js",
+      ".",
+      `
+interface RadialParsedData {
+  r: number;
+}
+`
+    )
+  ).toMatchInlineSnapshot(undefined`
+    "declare module "chart.js" {
+      export {
       } from "@types/chart.js";
     }
     "
