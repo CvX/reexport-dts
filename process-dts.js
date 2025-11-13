@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import { parse } from "@babel/parser";
 import traverseModule from "@babel/traverse";
 
-const traverse = traverseModule.default;
+const traverse = traverseModule.default || traverseModule;
 
 export default function processDts(packageName, pathName, dtsFile) {
   const ast = parse(dtsFile, {
@@ -36,17 +35,21 @@ export default function processDts(packageName, pathName, dtsFile) {
     return;
   }
 
-  console.log(`declare module "${packageName}${pathName.substring(1)}" {`);
-  console.log("  export {");
+  let output = "";
+  output += `declare module "${packageName}${pathName.substring(1)}" {\n`;
+  output += "  export {\n";
 
   for (const entry of exports) {
-    console.log(`    ${entry},`);
+    output += `    ${entry},\n`;
   }
 
-  console.log(
-    `  } from "@types/${packageName
-      .replace(/^@/, "")
-      .replace("/", "__")}${pathName.substring(1)}";`
-  );
-  console.log("}\n");
+  const originalPath =
+    "@types/" +
+    packageName.replace(/^@/, "").replace("/", "__") +
+    pathName.substring(1);
+
+  output += `  } from "${originalPath}";\n`;
+  output += "}\n";
+
+  return output;
 }

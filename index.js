@@ -33,6 +33,5 @@ if (packageJson["exports"]) {
 
 for (const [name, path] of dtsPaths) {
   const source = readFileSync(`./node_modules/${packageName}/${path}`, "utf-8");
-
-  processDts(packageName, name, source);
+  console.log(processDts(packageName, name, source));
 }
