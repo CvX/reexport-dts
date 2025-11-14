@@ -1,3 +1,5 @@
+import { compareVersions } from "compare-versions";
+
 export default function processPackageJson(packageJson) {
   const dtsPaths = new Map();
 
@@ -15,6 +17,30 @@ export default function processPackageJson(packageJson) {
       if (types) {
         dtsPaths.set(name, types);
       }
+    }
+  }
+
+  if (packageJson["typesVersions"]) {
+    let config = packageJson["typesVersions"]["*"];
+
+    if (!config) {
+      const highestVersion = Object.keys(packageJson["typesVersions"])
+        .sort(compareVersions)
+        .at(-1);
+      config = packageJson["typesVersions"][highestVersion];
+    }
+
+    for (let [name, entry] of Object.entries(config)) {
+      if (name !== "." && !name.startsWith("./")) {
+        name = `./${name}`;
+      }
+
+      let path = entry[0];
+      if (!path.endsWith(".d.ts")) {
+        path = `${path}.d.ts`;
+      }
+
+      dtsPaths.set(name, path);
     }
   }
 

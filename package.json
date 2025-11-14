@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@babel/parser": "^7.28.5",
-    "@babel/traverse": "^7.28.5"
+    "@babel/traverse": "^7.28.5",
+    "compare-versions": "^6.1.1"
   },
   "devDependencies": {
     "@discourse/lint-configs": "^2.35.0",

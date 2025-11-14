@@ -19,6 +19,45 @@ test("typings field", () => {
   `);
 });
 
+test("typesVersions field with a wildcard", () => {
+  expect(
+    processPackageJson({
+      typesVersions: {
+        "4.0": {},
+        "*": {
+          ".": ["./dist/index.d.ts"],
+          "*": ["./dist/*"],
+        },
+      },
+    })
+  ).toMatchInlineSnapshot(`
+    Map {
+      "." => "./dist/index.d.ts",
+      "./*" => "./dist/*.d.ts",
+    }
+  `);
+});
+
+test("typesVersions field with a version matcher", () => {
+  expect(
+    processPackageJson({
+      typesVersions: {
+        "<3.0": {},
+        ">=5.0": {
+          ".": ["./dist/index.d.ts"],
+          "locale/*": ["./dist/locale/*.d.ts"],
+        },
+        "4.0": {},
+      },
+    })
+  ).toMatchInlineSnapshot(`
+    Map {
+      "." => "./dist/index.d.ts",
+      "./locale/*" => "./dist/locale/*.d.ts",
+    }
+  `);
+});
+
 test("exports field", () => {
   expect(
     processPackageJson({

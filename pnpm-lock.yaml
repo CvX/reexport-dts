@@ -14,6 +14,9 @@ importers:
       '@babel/traverse':
         specifier: ^7.28.5
         version: 7.28.5
+      compare-versions:
+        specifier: ^6.1.1
+        version: 6.1.1
     devDependencies:
       '@discourse/lint-configs':
         specifier: ^2.35.0
@@ -772,6 +775,9 @@ packages:
 
   colord@2.9.3:
     resolution: {integrity: sha512-jeC1axXpnb0/2nn/Y1LPuLdgXBLH7aDcHu4KEKfqw3CUhX7ZpfBSlPKyqXE6btIgEzfWtrX3/tyBCaCvXvMkOw==}
+
+  compare-versions@6.1.1:
+    resolution: {integrity: sha512-4hm4VPpIecmlg59CHXnRDnqGplJFrbLG4aFEl5vl6cK1u76ws3LLvX7ikFnTDl5vo39sjWD6AaDPYodJp/NNHg==}
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
@@ -2850,6 +2856,8 @@ snapshots:
   color-name@1.1.4: {}
 
   colord@2.9.3: {}
+
+  compare-versions@6.1.1: {}
 
   concat-map@0.0.1: {}
 
