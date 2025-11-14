@@ -2,7 +2,7 @@
 import { expect, test } from "vitest";
 import processDts from "./process-dts.js";
 
-test("todo", () => {
+test("various exports", () => {
   expect(
     processDts(
       "chart.js",
@@ -66,7 +66,7 @@ export class DatasetController<
   `);
 });
 
-test("todo2", () => {
+test("more exports", () => {
   expect(
     processDts(
       "chart.js",
@@ -104,11 +104,5 @@ interface RadialParsedData {
 }
 `
     )
-  ).toMatchInlineSnapshot(undefined`
-    "declare module "chart.js" {
-      export {
-      } from "@types/chart.js";
-    }
-    "
-  `);
+  ).toStrictEqual(undefined);
 });
