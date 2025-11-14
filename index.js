@@ -31,6 +31,25 @@ if (packageJson["exports"]) {
   }
 }
 
+// TODO: handle structures like:
+// "exports": {
+//   "./package.json": "./package.json",
+//   ".": {
+//     "react-native": {
+//       "types": "./dist/immer.d.ts",
+//       "default": "./dist/immer.legacy-esm.js"
+//     },
+//     "import": {
+//       "types": "./dist/immer.d.ts",
+//       "default": "./dist/immer.mjs"
+//     },
+//     "require": {
+//       "types": "./dist/immer.d.ts",
+//       "default": "./dist/cjs/index.js"
+//     }
+//   }
+// },
+
 for (const [name, path] of dtsPaths) {
   const source = readFileSync(`./node_modules/${packageName}/${path}`, "utf-8");
 
