@@ -117,7 +117,7 @@ export default PhotoSwipeLightbox;
 export type Type<T> = import('../types.js').Type<T>;
 declare class PhotoSwipeLightbox extends PhotoSwipeBase {
 }
-  `
+`
     )
   ).toMatchInlineSnapshot(`
     "declare module "photoswipe/lightbox" {
@@ -142,7 +142,7 @@ interface Options {
 export declare function morph(node: ChildNode, reference: ChildNode | string, options?: Options): void;
 export declare function morphInner(element: Element, reference: Element | string, options?: Options): void;
 export {};
-  `
+`
     )
   ).toMatchInlineSnapshot(`
     "declare module "morphlex" {
@@ -150,6 +150,25 @@ export {};
         morph,
         morphInner,
       } from "@types/morphlex";
+    }
+    "
+  `);
+});
+
+test("export declare const", () => {
+  expect(
+    processDts(
+      "foo",
+      ".",
+      `
+export declare const globalId = "dt7948";
+`
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "foo" {
+      export {
+        globalId,
+      } from "@types/foo";
     }
     "
   `);

@@ -33,7 +33,13 @@ export default function processDts(packageName, pathName, dtsFile) {
           }
         }
       } else if (path.node.exportKind === "type") {
-        exports.add(path.node.declaration.id.name);
+        if (path.node.declaration?.type === "VariableDeclaration") {
+          for (const declaration of path.node.declaration.declarations) {
+            exports.add(declaration.id.name);
+          }
+        } else {
+          exports.add(path.node.declaration.id.name);
+        }
       }
     },
     ExportDefaultDeclaration() {
