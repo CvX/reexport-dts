@@ -11,30 +11,12 @@ export default function processPackageJson(packageJson) {
 
   if (packageJson["exports"]) {
     for (const [name, entry] of Object.entries(packageJson["exports"])) {
-      if (entry.types) {
-        dtsPaths.set(name, entry.types);
+      const types = entry.types || entry.import?.types || entry.require?.types;
+      if (types) {
+        dtsPaths.set(name, types);
       }
     }
   }
 
   return dtsPaths;
-
-  // TODO: handle structures like:
-  // "exports": {
-  //   "./package.json": "./package.json",
-  //   ".": {
-  //     "react-native": {
-  //       "types": "./dist/immer.d.ts",
-  //       "default": "./dist/immer.legacy-esm.js"
-  //     },
-  //     "import": {
-  //       "types": "./dist/immer.d.ts",
-  //       "default": "./dist/immer.mjs"
-  //     },
-  //     "require": {
-  //       "types": "./dist/immer.d.ts",
-  //       "default": "./dist/cjs/index.js"
-  //     }
-  //   }
-  // },
 }
