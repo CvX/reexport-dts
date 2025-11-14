@@ -21,7 +21,8 @@ export default function processDts(packageName, pathName, dtsFile) {
 
         if (
           path.node.declaration?.type === "ClassDeclaration" ||
-          path.node.declaration?.type === "TSEnumDeclaration"
+          path.node.declaration?.type === "TSEnumDeclaration" ||
+          path.node.declaration?.type === "TSDeclareFunction"
         ) {
           exports.add(path.node.declaration.id.name);
         }

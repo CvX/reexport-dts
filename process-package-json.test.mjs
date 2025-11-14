@@ -72,24 +72,25 @@ test("deep exports field", () => {
   `);
 });
 
-// test("exports field with wildcards", () => {
-//   expect(
-//     processPackageJson({
-//       exports: {
-//         ".": {
-//           types: "./types/index.d.ts",
-//           default: "./dist/index.js",
-//         },
-//         "./*": {
-//           types: "./types/*.d.ts",
-//           default: "./dist/*.js",
-//         },
-//         "./addon-main.js": "./addon-main.cjs",
-//       },
-//     })
-//   ).toMatchInlineSnapshot(`
-//     Map {
-//       "." => "./moment.d.ts",
-//     }
-//   `);
-// });
+test("exports field with wildcards", () => {
+  expect(
+    processPackageJson({
+      exports: {
+        ".": {
+          types: "./types/index.d.ts",
+          default: "./dist/index.js",
+        },
+        "./*": {
+          types: "./types/*.d.ts",
+          default: "./dist/*.js",
+        },
+        "./addon-main.js": "./addon-main.cjs",
+      },
+    })
+  ).toMatchInlineSnapshot(`
+    Map {
+      "." => "./types/index.d.ts",
+      "./*" => "./types/*.d.ts",
+    }
+  `);
+});

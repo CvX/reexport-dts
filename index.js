@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import { readFileSync } from "node:fs";
+import { globSync, readFileSync } from "node:fs";
+import { basename } from "node:path";
 import processDts from "./process-dts.js";
 import processPackageJson from "./process-package-json.js";
 
@@ -16,8 +17,28 @@ try {
 
 const dtsPaths = processPackageJson(packageJson);
 
+const expandedDtsPaths = new Map();
 for (const [name, path] of dtsPaths) {
-  const source = readFileSync(`./node_modules/${packageName}/${path}`, "utf-8");
+  if (path.includes("*")) {
+    for (const entry of globSync(path, {
+      cwd: `./node_modules/${packageName}`,
+    })) {
+      let expandedName = name.replace("*", basename(entry, ".d.ts"));
+
+      expandedName = expandedName.replace(/\/index$/, "");
+
+      expandedDtsPaths.set(
+        expandedName,
+        `./node_modules/${packageName}/${entry}`
+      );
+    }
+  } else {
+    expandedDtsPaths.set(name, `./node_modules/${packageName}/${path}`);
+  }
+}
+
+for (const [name, path] of expandedDtsPaths) {
+  const source = readFileSync(path, "utf-8");
 
   const reexports = processDts(packageName, name, source);
   if (reexports) {
