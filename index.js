@@ -20,9 +20,11 @@ const dtsPaths = processPackageJson(packageJson);
 const expandedDtsPaths = new Map();
 for (const [name, path] of dtsPaths) {
   if (path.includes("*")) {
-    for (const entry of globSync(path, {
+    const entries = globSync(path.replace("*", "**/*"), {
       cwd: `./node_modules/${packageName}`,
-    })) {
+    });
+
+    for (const entry of entries) {
       let expandedName = name.replace("*", basename(entry, ".d.ts"));
 
       expandedName = expandedName.replace(/\/index$/, "");
