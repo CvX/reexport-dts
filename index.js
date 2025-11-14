@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { readFileSync } from "node:fs";
 import processDts from "./process-dts.js";
+import processPackageJson from "./process-package-json.js";
 
 const packageName = process.argv[2];
 let packageJson;
@@ -13,42 +14,7 @@ try {
   process.exit(1);
 }
 
-const dtsPaths = new Map();
-
-if (packageJson["types"]) {
-  dtsPaths.set(".", packageJson["types"]);
-}
-
-if (packageJson["typings"]) {
-  dtsPaths.set(".", packageJson["typings"]);
-}
-
-if (packageJson["exports"]) {
-  for (const [name, entry] of Object.entries(packageJson["exports"])) {
-    if (entry.types) {
-      dtsPaths.set(name, entry.types);
-    }
-  }
-}
-
-// TODO: handle structures like:
-// "exports": {
-//   "./package.json": "./package.json",
-//   ".": {
-//     "react-native": {
-//       "types": "./dist/immer.d.ts",
-//       "default": "./dist/immer.legacy-esm.js"
-//     },
-//     "import": {
-//       "types": "./dist/immer.d.ts",
-//       "default": "./dist/immer.mjs"
-//     },
-//     "require": {
-//       "types": "./dist/immer.d.ts",
-//       "default": "./dist/cjs/index.js"
-//     }
-//   }
-// },
+const dtsPaths = processPackageJson(packageJson);
 
 for (const [name, path] of dtsPaths) {
   const source = readFileSync(`./node_modules/${packageName}/${path}`, "utf-8");
