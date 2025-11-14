@@ -129,3 +129,28 @@ declare class PhotoSwipeLightbox extends PhotoSwipeBase {
     "
   `);
 });
+
+test("morphlex exports", () => {
+  expect(
+    processDts(
+      "morphlex",
+      ".",
+      `
+interface Options {
+	ignoreActiveValue?: boolean;
+}
+export declare function morph(node: ChildNode, reference: ChildNode | string, options?: Options): void;
+export declare function morphInner(element: Element, reference: Element | string, options?: Options): void;
+export {};
+  `
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "morphlex" {
+      export {
+        morph,
+        morphInner,
+      } from "@types/morphlex";
+    }
+    "
+  `);
+});
