@@ -3,6 +3,9 @@ import { compareVersions } from "compare-versions";
 export default function processPackageJson(packageJson) {
   const dtsPaths = new Map();
 
+  // sometimes there is a index.d.ts and no package.json entries...
+  dtsPaths.set(".", "index.d.ts");
+
   if (packageJson["types"]) {
     dtsPaths.set(".", packageJson["types"]);
   }

@@ -2,6 +2,14 @@
 import { expect, test } from "vitest";
 import processPackageJson from "./process-package-json.js";
 
+test("no type fields", () => {
+  expect(processPackageJson({})).toMatchInlineSnapshot(`
+    Map {
+      "." => "index.d.ts",
+    }
+  `);
+});
+
 test("types field", () => {
   expect(processPackageJson({ types: "index.d.ts" })).toMatchInlineSnapshot(`
     Map {
