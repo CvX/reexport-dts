@@ -38,7 +38,12 @@ for (const [name, path] of dtsPaths) {
 }
 
 for (const [name, path] of expandedDtsPaths) {
-  const source = readFileSync(path, "utf-8");
+  let source;
+  try {
+    source = readFileSync(path, "utf-8");
+  } catch {
+    continue;
+  }
 
   const reexports = processDts(packageName, name, source);
   if (reexports) {
