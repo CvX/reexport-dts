@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { globSync, readFileSync } from "node:fs";
-import { basename } from "node:path";
 import processDts from "./process-dts.js";
 import processPackageJson from "./process-package-json.js";
 
@@ -24,10 +23,14 @@ for (const [name, path] of dtsPaths) {
       cwd: `./node_modules/${packageName}`,
     });
 
-    for (const entry of entries) {
-      let expandedName = name.replace("*", basename(entry, ".d.ts"));
+    const prefix = path.replace(/\*\.d\.ts$/, "");
+    const prefixToRemove = new RegExp(`^${prefix}`);
 
-      expandedName = expandedName.replace(/\/index$/, "");
+    for (const entry of entries) {
+      const expandedName = entry
+        .replace(prefixToRemove, "./")
+        .replace(/\.d\.ts$/, "")
+        .replace(/\/index$/, "");
 
       expandedDtsPaths.set(
         expandedName,
