@@ -37,8 +37,12 @@ export default function processDts(packageName, pathName, dtsFile) {
           for (const declaration of path.node.declaration.declarations) {
             exports.add(declaration.id.name);
           }
-        } else {
+        } else if (path.node.declaration?.id?.name) {
           exports.add(path.node.declaration.id.name);
+        } else {
+          for (const specifier of path.node.specifiers) {
+            exports.add(specifier.exported.name);
+          }
         }
       }
     },

@@ -173,3 +173,30 @@ export declare const globalId = "dt7948";
     "
   `);
 });
+
+test("export multiple things", () => {
+  expect(
+    processDts(
+      "foo",
+      ".",
+      `
+import Diff from './diff/base.js';
+import { diffChars, characterDiff } from './diff/character.js';
+import { diffWords, diffWordsWithSpace, wordDiff, wordsWithSpaceDiff } from './diff/word.js';
+export { Diff, diffChars, characterDiff, diffWords, wordDiff, wordsWithSpaceDiff };
+`
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "foo" {
+      export {
+        Diff,
+        diffChars,
+        characterDiff,
+        diffWords,
+        wordDiff,
+        wordsWithSpaceDiff,
+      } from "@types/foo";
+    }
+    "
+  `);
+});
