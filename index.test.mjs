@@ -2,7 +2,7 @@
 import { expect, test } from "vitest";
 import processDts from "./process-dts.js";
 
-test("various exports", () => {
+test("chart.js exports", () => {
   expect(
     processDts(
       "chart.js",
@@ -66,7 +66,7 @@ export class DatasetController<
   `);
 });
 
-test("more exports", () => {
+test("more chart.js exports", () => {
   expect(
     processDts(
       "chart.js",
@@ -105,4 +105,27 @@ interface RadialParsedData {
 `
     )
   ).toStrictEqual(undefined);
+});
+
+test("photoswipe exports", () => {
+  expect(
+    processDts(
+      "photoswipe",
+      "./lightbox",
+      `
+export default PhotoSwipeLightbox;
+export type Type<T> = import('../types.js').Type<T>;
+declare class PhotoSwipeLightbox extends PhotoSwipeBase {
+}
+  `
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "photoswipe/lightbox" {
+      export {
+        default,
+        Type,
+      } from "@types/photoswipe/lightbox";
+    }
+    "
+  `);
 });
