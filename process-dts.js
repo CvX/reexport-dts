@@ -55,18 +55,29 @@ export default function processDts(packageName, pathName, dtsFile) {
     return;
   }
 
+  let moduleName = packageName;
+  if (pathName !== ".") {
+    moduleName += `/${pathName}`;
+  }
+
   let output = "";
-  output += `declare module "${packageName}${pathName.substring(1)}" {\n`;
+  output += `declare module "${moduleName}" {\n`;
   output += "  export {\n";
 
   for (const entry of exports) {
     output += `    ${entry},\n`;
   }
 
-  const originalPath =
-    "@types/" +
-    packageName.replace(/^@/, "").replace("/", "__") +
-    pathName.substring(1);
+  let originalPathParts = [
+    "@types",
+    packageName.replace(/^@/, "").replace("/", "__"),
+  ];
+
+  if (pathName !== ".") {
+    originalPathParts.push(pathName);
+  }
+
+  const originalPath = originalPathParts.join("/");
 
   output += `  } from "${originalPath}";\n`;
   output += "}\n";

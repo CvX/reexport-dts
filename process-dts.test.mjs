@@ -111,7 +111,7 @@ test("photoswipe exports", () => {
   expect(
     processDts(
       "photoswipe",
-      "./lightbox",
+      "lightbox",
       `
 export default PhotoSwipeLightbox;
 export type Type<T> = import('../types.js').Type<T>;
@@ -196,6 +196,48 @@ export { Diff, diffChars, characterDiff, diffWords, wordDiff, wordsWithSpaceDiff
         wordDiff,
         wordsWithSpaceDiff,
       } from "@types/foo";
+    }
+    "
+  `);
+});
+
+test("package name with a slash", () => {
+  expect(
+    processDts(
+      "@glint/template",
+      ".",
+      `
+export type ModifierLike<S = unknown> = Invokable<
+  (element: Get<S, 'Element'>, ...args: InvokableArgs<Get<S, 'Args'>>) => ModifierReturn
+>;
+`
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "@glint/template" {
+      export {
+        ModifierLike,
+      } from "@types/glint__template";
+    }
+    "
+  `);
+});
+
+test("package with submodules starting with - and a name with a slash", () => {
+  expect(
+    processDts(
+      "@glint/template",
+      "-private",
+      `
+export type FlattenBlockParams<T> = {
+  [K in keyof T]: T[K] extends { Params: { Positional: infer U } } ? U : T[K];
+};
+`
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "@glint/template/-private" {
+      export {
+        FlattenBlockParams,
+      } from "@types/glint__template/-private";
     }
     "
   `);

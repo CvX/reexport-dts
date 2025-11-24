@@ -28,7 +28,7 @@ for (const [name, path] of dtsPaths) {
 
     for (const entry of entries) {
       const expandedName = entry
-        .replace(prefixToRemove, "./")
+        .replace(prefixToRemove, "")
         .replace(/\.d\.ts$/, "")
         .replace(/\/index$/, "");
 
@@ -38,7 +38,10 @@ for (const [name, path] of dtsPaths) {
       );
     }
   } else {
-    expandedDtsPaths.set(name, `./node_modules/${packageName}/${path}`);
+    expandedDtsPaths.set(
+      name.replace(/^\.\//, ""),
+      `./node_modules/${packageName}/${path}`
+    );
   }
 }
 
