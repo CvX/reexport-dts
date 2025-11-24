@@ -242,3 +242,22 @@ export type FlattenBlockParams<T> = {
     "
   `);
 });
+
+test("a @types package", () => {
+  expect(
+    processDts(
+      "@types/rsvp",
+      ".",
+      `
+export default RSVP;
+`
+    )
+  ).toMatchInlineSnapshot(`
+    "declare module "rsvp" {
+      export {
+        default,
+      } from "@types/rsvp";
+    }
+    "
+  `);
+});

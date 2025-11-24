@@ -55,7 +55,7 @@ export default function processDts(packageName, pathName, dtsFile) {
     return;
   }
 
-  let moduleName = packageName;
+  let moduleName = packageName.replace(/^@types\//, "");
   if (pathName !== ".") {
     moduleName += `/${pathName}`;
   }
@@ -68,10 +68,15 @@ export default function processDts(packageName, pathName, dtsFile) {
     output += `    ${entry},\n`;
   }
 
-  let originalPathParts = [
-    "@types",
-    packageName.replace(/^@/, "").replace("/", "__"),
-  ];
+  let originalPathParts;
+  if (packageName.startsWith("@types/")) {
+    originalPathParts = [packageName];
+  } else {
+    originalPathParts = [
+      "@types",
+      packageName.replace(/^@/, "").replace("/", "__"),
+    ];
+  }
 
   if (pathName !== ".") {
     originalPathParts.push(pathName);
