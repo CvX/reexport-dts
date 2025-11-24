@@ -23,23 +23,22 @@ for (const [name, path] of dtsPaths) {
       cwd: `./node_modules/${packageName}`,
     });
 
-    const prefix = path.replace(/\*\.d\.ts$/, "");
-    const prefixToRemove = new RegExp(`^${prefix}`);
+    const prefixToRemove = path.match(/^(\.\/)?(.*)\*\.d\.ts$/, "")[2];
 
     for (const entry of entries) {
       const expandedName = entry
         .replace(prefixToRemove, "")
         .replace(/\.d\.ts$/, "")
-        .replace(/\/index$/, "");
+        .replace(/(^|\/)index$/, "");
 
       expandedDtsPaths.set(
-        expandedName,
+        expandedName || ".",
         `./node_modules/${packageName}/${entry}`
       );
     }
   } else {
     expandedDtsPaths.set(
-      name.replace(/^\.\//, ""),
+      name.replace(/^\.\//, "") || ".",
       `./node_modules/${packageName}/${path}`
     );
   }
